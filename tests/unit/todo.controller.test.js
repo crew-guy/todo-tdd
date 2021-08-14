@@ -12,7 +12,13 @@ beforeEach(() => {
     next = jest.fn()
 })
 
-describe("basic test to describe create todo", () => {
+describe("TodoController.getTodos", () => {
+    it('ensures that get todo function exists', () => {
+        expect(typeof TodoController.getTodos).toBe('function')
+    })
+})
+
+describe("TodoController.createTodos", () => {
     beforeEach(() => {
         req.body = newTodo 
     })
