@@ -13,6 +13,8 @@ beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
     next = jest.fn()
+    jest.setTimeout(60000);
+    // p = new SUT.PlaywrightFluent();
 })
 
 describe("TodoController.getTodos", () => {
