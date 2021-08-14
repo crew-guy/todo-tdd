@@ -29,9 +29,9 @@ describe("basic test to describe create todo", () => {
         expect(res.statusCode).toBe(201)
         expect(res._isEndCalled()).toBeTruthy()
     })
-    it('tested mock response', () => {
+    it('tested mock response',async () => {
         TodoModel.create.mockReturnValue(newTodo)
-        TodoController.createTodo(req, res, next)
+        await TodoController.createTodo(req, res, next)
         expect(res._getJSONData()).toStrictEqual(newTodo)
     })
 })
