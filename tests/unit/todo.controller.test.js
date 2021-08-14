@@ -30,6 +30,13 @@ describe("TodoController.getTodos", () => {
         expect(res._isEndCalled).toBeTruthy()
         expect(res._getJSONData()).toStrictEqual(allTodos)
     })
+    it('ensures that errors are handled properly', async () => {
+        const errorMessage = { message: "Could not fetch todos" }
+        const rejectedPromise = Promise.reject(errorMessage)
+        TodoModel.find.mockReturnValue(rejectedPromise)
+        await TodoController.getTodos(req, res, next);
+        expect(next).toHaveBeenCalledWith(errorMessage)
+    })
 })
 
 describe("TodoController.createTodos", () => {
