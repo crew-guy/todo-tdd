@@ -2,8 +2,11 @@ const TodoController = require('../../controllers/todo.controller')
 const TodoModel = require('../../model/todo.model')
 const httpMocks = require('node-mocks-http')
 const newTodo = require('../mock-data/new-todo.json')
+const allTodos = require('../mock-data/all-todos.json')
+
 
 TodoModel.create = jest.fn();
+TodoModel.find = jest.fn();
 
 let req, res, next;
 beforeEach(() => {
@@ -15,6 +18,17 @@ beforeEach(() => {
 describe("TodoController.getTodos", () => {
     it('ensures that get todo function exists', () => {
         expect(typeof TodoController.getTodos).toBe('function')
+    })
+    it('calls the find method on TodoModel', async() => {
+        await TodoController.getTodos(req, res, next);
+        expect(TodoModel.find).toHaveBeenCalledWith({});
+    })
+    it('ensures response code is 200 and response is returned', async () => {
+        TodoModel.find.mockReturnValue(allTodos)
+        await TodoController.getTodos(req, res, next);
+        expect(res.statusCode).toBe(200)
+        expect(res._isEndCalled).toBeTruthy()
+        expect(res._getJSONData()).toStrictEqual(allTodos)
     })
 })
 
