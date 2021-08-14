@@ -24,8 +24,8 @@ describe("basic test to describe create todo", () => {
         TodoController.createTodo(req,res,next)
         expect(TodoModel.create).toBeCalled();
     })
-    it('response status code check and send check', () => {
-        TodoController.createTodo(req, res, next)
+    it('response status code check and send check', async() => {
+        await TodoController.createTodo(req, res, next)
         expect(res.statusCode).toBe(201)
         expect(res._isEndCalled()).toBeTruthy()
     })
