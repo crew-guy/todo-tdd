@@ -1,4 +1,4 @@
-const TodoController = require('../../controllers/test.controller')
+const TodoController = require('../../controllers/todo.controller')
 const TodoModel = require('../../model/todo.model')
 const httpMocks = require('node-mocks-http')
 const newTodo = require('../mock-data/new-todo.json')
