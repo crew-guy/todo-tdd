@@ -1,5 +1,6 @@
 const request = require('supertest')
 const newTodo = require('../mock-data/new-todo.json')
+const updatedTodo = require('../mock-data/updated-todo.json')
 const app = require('../../app')
 
 const endpointUrl = "/todos/"
@@ -41,5 +42,20 @@ describe(endpointUrl + 'integration tests on getting todos',  () => {
     test('GET ' + endpointUrl + ':/todoId' + ' -> 404 error if id does not exist', async() => {
         const response = await request(app).get(endpointUrl + "6117ec7de274e8c7273bf294")
         expect(response.statusCode).toBe(404)
+    })
+})
+
+describe(endpointUrl + 'integration tests for updating a todo by id', () => {
+    test('GET ' + endpointUrl, async() => {
+        const response = await request(app).get(endpointUrl);
+        // console.log(response)
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy()
+        expect(response.body[0].title).toBeDefined()
+        firstTodo = response.body[0]
+    })
+    it('PUT ' + endpointUrl + ":/todoId", async () => {
+        const response = await request(app).put(endpointUrl + firstTodo._id).send(updatedTodo)
+        expect(response.statusCode).toBe(200)
     })
 })

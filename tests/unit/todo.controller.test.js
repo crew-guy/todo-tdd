@@ -119,7 +119,10 @@ describe("TodoController.updateTodo", () => {
     it('findByIdAndUpdate must be called with the necessary params', async() => {
         TodoModel.findByIdAndUpdate.mockReturnValue(updatedTodo);
         await TodoController.updateTodo(req,res,next)
-        expect(TodoModel.findByIdAndUpdate).toHaveBeenCalledWith(testTodoId, updatedTodo);
+        expect(TodoModel.findByIdAndUpdate).toHaveBeenCalledWith(testTodoId, updatedTodo, {
+            new: true,
+            useFindAndModify:false
+        });
     })
     it('should have a response and status should be 200', async () => {
         TodoModel.findByIdAndUpdate.mockReturnValue(updatedTodo)
