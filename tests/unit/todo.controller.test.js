@@ -52,6 +52,14 @@ describe('get Todo using its uuid', () => {
         await TodoController.getTodo(req, res, next);
         expect(TodoModel.findById).toBeCalledWith("6117ec7de274e8c9273bf293")
     })
+    it('should return json body and a response status of 200', async() => {
+        TodoModel.findById.mockReturnValue(newTodo);
+        req.params.todoId = "6117ec7de274e8c9273bf293"
+        await TodoController.getTodo(req, res, next);
+        expect(res.statusCode).toBe(200);
+        expect(res._isEndCalled).toBeTruthy();
+        expect(res._getJSONData()).toStrictEqual(newTodo);
+    })
 })
 
 
