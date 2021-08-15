@@ -59,3 +59,15 @@ describe(endpointUrl + 'integration tests for updating a todo by id', () => {
         expect(response.statusCode).toBe(200)
     })
 })
+
+describe(endpointUrl + "integration tests for deleting a todo by id", () => {
+    test('DELETE ' + endpointUrl + ":/todoId", async () => {
+        const response = await request(app).delete(endpointUrl + firstTodo._id)
+        expect(response.statusCode).toBe(200)
+        expect(response.body.title).toBeDefined();
+    })
+    test('DELETE ' + endpointUrl + ":/todoId", async () => {
+        const response = await request(app).delete(endpointUrl + "6117ec7de274e8c7273bf294")
+        expect(response.statusCode).toBe(404)
+    })
+})
