@@ -127,4 +127,17 @@ describe("TodoController.updateTodo", () => {
         expect(res.statusCode).toBe(200)
         expect(res._getJSONData()).toStrictEqual(updatedTodo)
     })
+    it('should throw error to next function in case of err', async () => {
+        const errorMessage = { message: "The entry you wanna update was not found" }
+        const rejectedPromise = Promise.reject(errorMessage)
+        TodoModel.findByIdAndUpdate.mockReturnValue(rejectedPromise)
+        await TodoController.updateTodo(req, res, next);
+        expect(next).toHaveBeenCalledWith(errorMessage)
+    })
+    it('should throw 404 error if todo to update was never found', async () => {
+        TodoModel.findByIdAndUpdate.mockReturnValue(null);
+        await TodoController.updateTodo(req, res, next);
+        expect(res.statusCode).toBe(404)
+        expect(res.body).toBe(undefined)
+    })
 })
