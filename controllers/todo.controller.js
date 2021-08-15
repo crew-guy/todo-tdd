@@ -25,7 +25,7 @@ exports.getTodo = async (req, res, next) => {
             res.status(200).json(gottenTodo)
         }
         else {
-            res.status(404)
+            res.status(404).json(gottenTodo)
         }
     } catch (error) {
         next(error)

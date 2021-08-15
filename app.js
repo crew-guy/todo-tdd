@@ -7,9 +7,9 @@ app.use(express.json())
 mongodb.connect();
 
 app.use('/todos', todoRoutes);
-// app.get('/', (req, res) => {
-//     res.json('Hello world')
-// })
+app.get('/', (req, res) => {
+    res.json('Hello world')
+})
 
 app.use((error, req, res, next) => {
     res.status(500).json({message:error.message})

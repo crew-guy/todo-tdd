@@ -38,4 +38,8 @@ describe(endpointUrl + 'integration tests on getting todos',  () => {
         expect(response.body.title).toBeDefined()
         expect(response.body.done).toBeDefined()
     })
+    test('GET ' + endpointUrl + ':/todoId' + ' -> 404 error if id does not exist', async() => {
+        const response = await request(app).get(endpointUrl + "6117ec7de274e8c7273bf294")
+        expect(response.statusCode).toBe(404)
+    })
 })
