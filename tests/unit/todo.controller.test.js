@@ -6,11 +6,15 @@ const allTodos = require('../mock-data/all-todos.json')
 const updatedTodo = require('../mock-data/updated-todo.json')
 const deletedTodo = require('../mock-data/deleted-todo.json')
 
+// To individually create mock functions of each method on this model
 TodoModel.create = jest.fn();
 TodoModel.find = jest.fn();
 TodoModel.findById = jest.fn();
 TodoModel.findByIdAndUpdate = jest.fn();
 TodoModel.findByIdAndDelete = jest.fn();
+
+// To once and for all create mock functions of all methods on this model
+jest.mock('../../model/todo.model.js')
 
 let req, res, next, testTodoId;
 beforeEach(() => {
