@@ -4,11 +4,13 @@ const httpMocks = require('node-mocks-http')
 const newTodo = require('../mock-data/new-todo.json')
 const allTodos = require('../mock-data/all-todos.json')
 const updatedTodo = require('../mock-data/updated-todo.json')
+const deletedTodo = require('../mock-data/deleted-todo.json')
 
 TodoModel.create = jest.fn();
 TodoModel.find = jest.fn();
 TodoModel.findById = jest.fn();
 TodoModel.findByIdAndUpdate = jest.fn();
+TodoModel.findByIdAndDelete = jest.fn();
 
 let req, res, next, testTodoId;
 beforeEach(() => {
@@ -142,5 +144,19 @@ describe("TodoController.updateTodo", () => {
         await TodoController.updateTodo(req, res, next);
         expect(res.statusCode).toBe(404)
         expect(res.body).toBe(undefined)
+    })
+})
+
+describe('TodoController.deleteTodo', () => {
+    beforeEach(() => {
+        req.params.todoId = testTodoId
+    })
+    it('ensures that a delete function exists on controller', () => {
+        expect(typeof TodoController.deleteTodo).toBe('function')
+    })
+    it('ensures that find by id and delete is called with accurate params', async() => {
+        TodoModel.findByIdAndDelete.mockReturnValue(deletedTodo)
+        await TodoController.deleteTodo(req,res,next)
+        expect(TodoModel.findByIdAndDelete).toHaveBeenCalledWith(testTodoId)
     })
 })
