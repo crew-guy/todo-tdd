@@ -159,4 +159,23 @@ describe('TodoController.deleteTodo', () => {
         await TodoController.deleteTodo(req,res,next)
         expect(TodoModel.findByIdAndDelete).toHaveBeenCalledWith(testTodoId)
     })
+    it('ensures response is returned and status code is 200', async () => {
+        TodoModel.findByIdAndDelete.mockReturnValue(deletedTodo)
+        await TodoController.deleteTodo(req, res, next);
+        expect(res.statusCode).toBe(200)
+        expect(res._isEndCalled).toBeTruthy()
+        expect(res._getJSONData()).toStrictEqual(deletedTodo)
+    })
+    it('should check that error was returned', async () => {
+        const errorMessage= {message:"The queried item could not be deleted"}
+        const rejectedPromise = Promise.reject(errorMessage)
+        TodoModel.findByIdAndDelete.mockReturnValue(rejectedPromise)
+        await TodoController.deleteTodo(req, res, next)
+        expect(next).toHaveBeenCalledWith(errorMessage)
+    })
+    it('should return 404 error if entry was not found', async () => {
+        TodoModel.findByIdAndDelete.mockReturnValue(null)
+        await TodoController.deleteTodo(req, res, next)
+        expect(res.statusCode).toBe(404)
+    })
 })
