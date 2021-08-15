@@ -7,6 +7,7 @@ const allTodos = require('../mock-data/all-todos.json')
 
 TodoModel.create = jest.fn();
 TodoModel.find = jest.fn();
+TodoModel.findById = jest.fn();
 
 let req, res, next;
 beforeEach(() => {
@@ -40,6 +41,19 @@ describe("TodoController.getTodos", () => {
         expect(next).toHaveBeenCalledWith(errorMessage)
     })
 })
+
+
+describe('get Todo using its uuid', () => {
+    it('check that the get todo function exists', () => {
+        expect(typeof TodoController.getTodo).toBe('function')
+    })
+    it('check that the find method on TodoModel is called with id', async () => {
+        req.params.todoId= "6117ec7de274e8c9273bf293"
+        await TodoController.getTodo(req, res, next);
+        expect(TodoModel.findById).toBeCalledWith("6117ec7de274e8c9273bf293")
+    })
+})
+
 
 describe("TodoController.createTodos", () => {
     beforeEach(() => {
