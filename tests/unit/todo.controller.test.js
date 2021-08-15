@@ -8,6 +8,7 @@ const updatedTodo = require('../mock-data/updated-todo.json')
 TodoModel.create = jest.fn();
 TodoModel.find = jest.fn();
 TodoModel.findById = jest.fn();
+TodoModel.findByIdAndUpdate = jest.fn();
 
 let req, res, next;
 beforeEach(() => {
@@ -108,5 +109,13 @@ describe("TodoController.createTodos", () => {
 describe("TodoController.updateTodo", () => {
     it('controller should have an update todo function', () => {
         expect(typeof TodoController.updateTodo).toBe('function')
+    })
+    it('findByIdAndUpdate must be called with the necessary params', async() => {
+        TodoModel.findByIdAndUpdate.mockReturnValue(updatedTodo);
+        let testTodoId = "6117ec7de274e8c9273bf293"
+        req.params.todoId = testTodoId
+        req.body = updatedTodo
+        await TodoController.updateTodo(req,res,next)
+        expect(TodoModel.findByIdAndUpdate).toHaveBeenCalledWith(testTodoId, updatedTodo);
     })
 })
