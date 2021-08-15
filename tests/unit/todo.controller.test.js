@@ -60,6 +60,18 @@ describe('get Todo using its uuid', () => {
         expect(res._isEndCalled).toBeTruthy();
         expect(res._getJSONData()).toStrictEqual(newTodo);
     })
+    it('should return a throw error message', async () => {
+        const errorMessage = { message: "404 error. Entry not found" }
+        const rejectedPromise = Promise.reject(errorMessage)
+        TodoModel.findById.mockReturnValue(rejectedPromise)
+        await TodoController.getTodo(req, res, next);
+        expect(next).toHaveBeenCalledWith(errorMessage)
+    })
+    it(`should throw a 404 error message in case todo doesn't exist`, async () => {
+        TodoModel.findById.mockReturnValue(null)
+        await TodoController.getTodo(req, res, next)
+        expect(res.statusCode).toBe(404)
+    })
 })
 
 

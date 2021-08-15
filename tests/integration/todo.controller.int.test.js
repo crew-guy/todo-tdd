@@ -4,6 +4,8 @@ const app = require('../../app')
 
 const endpointUrl = "/todos/"
 
+let firstTodo
+
 describe(endpointUrl + "integration test on posting a request", () => {
     
     it("POST " + endpointUrl, async () => {
@@ -28,5 +30,12 @@ describe(endpointUrl + 'integration tests on getting todos',  () => {
         expect(response.statusCode).toBe(200);
         expect(Array.isArray(response.body)).toBeTruthy()
         expect(response.body[0].title).toBeDefined()
+        firstTodo = response.body[0]
+    })
+    test('GET ' + endpointUrl + ':/todoId', async() => {
+        const response = await request(app).get(endpointUrl + firstTodo._id)
+        expect(response.statusCode).toBe(200)
+        expect(response.body.title).toBeDefined()
+        expect(response.body.done).toBeDefined()
     })
 })

@@ -21,7 +21,12 @@ exports.getTodos = async (req, res, next) => {
 exports.getTodo = async (req, res, next) => {
     try {
         const gottenTodo = await TodoModel.findById(req.params.todoId)
-        res.status(200).json(gottenTodo)
+        if (gottenTodo) {
+            res.status(200).json(gottenTodo)
+        }
+        else {
+            res.status(404)
+        }
     } catch (error) {
         next(error)
     }
