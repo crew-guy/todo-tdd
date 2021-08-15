@@ -10,11 +10,12 @@ TodoModel.find = jest.fn();
 TodoModel.findById = jest.fn();
 TodoModel.findByIdAndUpdate = jest.fn();
 
-let req, res, next;
+let req, res, next, testTodoId;
 beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
     next = jest.fn()
+    testTodoId = "6117ec7de274e8c9273bf293"
     // jest.setTimeout(60000);
 })
 
@@ -107,15 +108,23 @@ describe("TodoController.createTodos", () => {
 })
 
 describe("TodoController.updateTodo", () => {
+
+    beforeEach(() => {
+        req.params.todoId = testTodoId
+        req.body = updatedTodo
+    })
     it('controller should have an update todo function', () => {
         expect(typeof TodoController.updateTodo).toBe('function')
     })
     it('findByIdAndUpdate must be called with the necessary params', async() => {
         TodoModel.findByIdAndUpdate.mockReturnValue(updatedTodo);
-        let testTodoId = "6117ec7de274e8c9273bf293"
-        req.params.todoId = testTodoId
-        req.body = updatedTodo
         await TodoController.updateTodo(req,res,next)
         expect(TodoModel.findByIdAndUpdate).toHaveBeenCalledWith(testTodoId, updatedTodo);
+    })
+    it('should have a response and status should be 200', async () => {
+        TodoModel.findByIdAndUpdate.mockReturnValue(updatedTodo)
+        await TodoController.updateTodo(req, res, next);
+        expect(res.statusCode).toBe(200)
+        expect(res._getJSONData()).toStrictEqual(updatedTodo)
     })
 })
