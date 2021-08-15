@@ -3,7 +3,7 @@ const TodoModel = require('../../model/todo.model')
 const httpMocks = require('node-mocks-http')
 const newTodo = require('../mock-data/new-todo.json')
 const allTodos = require('../mock-data/all-todos.json')
-
+const updatedTodo = require('../mock-data/updated-todo.json')
 
 TodoModel.create = jest.fn();
 TodoModel.find = jest.fn();
@@ -14,8 +14,7 @@ beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
     next = jest.fn()
-    jest.setTimeout(60000);
-    // p = new SUT.PlaywrightFluent();
+    // jest.setTimeout(60000);
 })
 
 describe("TodoController.getTodos", () => {
@@ -103,5 +102,11 @@ describe("TodoController.createTodos", () => {
         TodoModel.create.mockReturnValue(rejectedPromise)
         await TodoController.createTodo(res,req,next)
         expect(next).toBeCalledWith(errorMessage)
+    })
+})
+
+describe("TodoController.updateTodo", () => {
+    it('controller should have an update todo function', () => {
+        expect(typeof TodoController.updateTodo).toBe('function')
     })
 })
